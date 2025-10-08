@@ -61,3 +61,11 @@ nav ul li:hover {
 #stats ul li{
     margin-bottom: 0.5em;
 }
+
+.red{
+  color:red
+
+}
+.green{
+  color:green
+}
