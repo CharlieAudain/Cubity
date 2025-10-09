@@ -5,7 +5,7 @@ let timerLoop = null;
 let timerState;
 let heldTime = 0;
 let solves = [];
-const xbutton = timer.lastChild
+const xbutton = document.getElementById("removeSolve");
 const doc = document.querySelector("body");
 function timerInit() {
   loadSolves();
@@ -16,7 +16,7 @@ function timerInit() {
         timerStop();
       } else {
         if (e.repeat == true) {
-          timerText.innerHTML = "0.00"
+          timerText.innerHTML = "0.00";
           timerText.classList.add("red");
           heldTime += 1;
           console.log(heldTime);
@@ -77,11 +77,21 @@ function loadSolves() {
   solves = loadData;
 }
 
-function removeLast(){
-  solves.pop()
-  timerText.innerHTML = "0.00"
-
+function removeLast() {
+  solves.pop();
+  lastIndex = solves.length;
+  if (lastIndex > 0) {
+    timerText.innerHTML = solves[lastIndex - 1];
+  } else {
+    timerText.innerHTML = "0.00";
+  }
+  saveSolves()
+  console.log(solves);
 }
 
-console.log(xbutton)
+xbutton.addEventListener("click", (e) => {
+  e.target.blur();
+  removeLast();
+});
+console.log(xbutton);
 timerInit();
