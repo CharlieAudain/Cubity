@@ -19,13 +19,13 @@ function timerInit() {
       if (timerLoop) {
         timerStop();
       } else {
+        timerText.innerHTML = "0.00";
+        timerText.classList.add("red");
         if (e.repeat == true) {
-          timerText.innerHTML = "0.00";
-          timerText.classList.add("red");
           heldTime += 1;
           console.log(heldTime);
         }
-        if (heldTime > 10) {
+        if (heldTime > 2) {
           timerText.classList.add("green");
           timerText.classList.remove("red");
           timerState = "ready";
