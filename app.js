@@ -16,7 +16,7 @@ const dnfbutton = document.getElementById("dnfButton");
 const doc = document.querySelector("body");
 function timerInit() {
   loadSolves();
-  a05Init()
+  a05Init();
   timerText.innerText = "0.00";
   doc.addEventListener("keypress", (e) => {
     if (e.key === " ") {
@@ -131,7 +131,8 @@ function removeLast() {
 }
 
 function penaltyLast() {
-  lastSolve = timerText.innerHTML;
+  let lastIndex = solves.length - 1;
+  lastSolve = solves[lastIndex];
   if (lastSolve.includes("+") == false) {
     lastNumber = Number(lastSolve);
     lastNumber += 2;
@@ -143,11 +144,11 @@ function penaltyLast() {
   }
 }
 function dnfLast() {
-  lastSolve = timerText.innerHTML;
-  let lastIndex = solves.length;
+  let lastIndex = solves.length - 1;
+  lastSolve = solves[lastIndex];
   if (lastSolve.includes("DNF") == false) {
     timerText.innerHTML = "DNF";
-    solves[lastIndex - 1] = "DNF";
+    solves[lastIndex] = "DNF";
     saveSolves();
   }
 }
