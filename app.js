@@ -5,7 +5,9 @@ let timerLoop = null;
 let timerState;
 let heldTime = 0;
 let solves = [];
-const xbutton = document.getElementById("removeSolve");
+
+const xbutton = document.getElementById("removeButton");
+const penbutton = document.getElementById("penaltyButton");
 const doc = document.querySelector("body");
 function timerInit() {
   loadSolves();
@@ -78,6 +80,7 @@ function loadSolves() {
 }
 
 function removeLast() {
+  let lastIndex = solves.length;
   solves.pop();
   lastIndex = solves.length;
   if (lastIndex > 0) {
@@ -85,13 +88,30 @@ function removeLast() {
   } else {
     timerText.innerHTML = "0.00";
   }
-  saveSolves()
+  saveSolves();
   console.log(solves);
+}
+
+function penaltyLast() {
+  lastSolve = timerText.innerHTML;
+  if (lastSolve.includes("+") == false) {
+    lastNumber = Number(lastSolve);
+    lastNumber += 2;
+    let lastIndex = solves.length;
+    penaltySolve = lastNumber.toFixed(2) + "+";
+    console.log(lastIndex);
+    timerText.innerHTML = penaltySolve;
+    solves[lastIndex - 1] = penaltySolve;
+  }
 }
 
 xbutton.addEventListener("click", (e) => {
   e.target.blur();
   removeLast();
+});
+penbutton.addEventListener("click", (e) => {
+  e.target.blur();
+  penaltyLast();
 });
 console.log(xbutton);
 timerInit();
