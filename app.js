@@ -5,9 +5,11 @@ let timerLoop = null;
 let timerState;
 let heldTime = 0;
 let solves = [];
+let a05 = [];
 
 const xbutton = document.getElementById("removeButton");
 const penbutton = document.getElementById("penaltyButton");
+const dnfbutton = document.getElementById("dnfButton");
 const doc = document.querySelector("body");
 function timerInit() {
   loadSolves();
@@ -32,6 +34,11 @@ function timerInit() {
     }
   });
 }
+
+function a05Init() {
+  ao5 = loadAvg(5);
+}
+
 doc.addEventListener("keyup", (e) => {
   if (e.key === " ") {
     heldtime = 0;
@@ -79,6 +86,15 @@ function loadSolves() {
   solves = loadData;
 }
 
+function loadAvg(avgLength) {
+  let avg = [];
+  let lastIndex = solves.length;
+  for (i = 1; i < avgLength + 1; i++) {
+    avg.push(solves[lastIndex - i]);
+  }
+  return avg;
+}
+
 function removeLast() {
   let lastIndex = solves.length;
   solves.pop();
@@ -99,9 +115,18 @@ function penaltyLast() {
     lastNumber += 2;
     let lastIndex = solves.length;
     penaltySolve = lastNumber.toFixed(2) + "+";
-    console.log(lastIndex);
     timerText.innerHTML = penaltySolve;
     solves[lastIndex - 1] = penaltySolve;
+    saveSolves();
+  }
+}
+function dnfLast() {
+  lastSolve = timerText.innerHTML;
+  let lastIndex = solves.length;
+  if (lastSolve.includes("DNF") == false) {
+    timerText.innerHTML = "DNF";
+    solves[lastIndex - 1] = "DNF";
+    saveSolves();
   }
 }
 
@@ -113,5 +138,9 @@ penbutton.addEventListener("click", (e) => {
   e.target.blur();
   penaltyLast();
 });
-console.log(xbutton);
+dnfbutton.addEventListener("click", (e) => {
+  e.target.blur();
+  dnfLast();
+});
+
 timerInit();
