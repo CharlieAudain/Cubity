@@ -5,7 +5,10 @@ let timerLoop = null;
 let timerState;
 let heldTime = 0;
 let solves = [];
-let a05 = [];
+let ao5 = [];
+let feed = document.getElementById("feed");
+let cavg = document.getElementsByClassName("cavg");
+let cao5 = document.getElementById("ao5");
 
 const xbutton = document.getElementById("removeButton");
 const penbutton = document.getElementById("penaltyButton");
@@ -13,6 +16,7 @@ const dnfbutton = document.getElementById("dnfButton");
 const doc = document.querySelector("body");
 function timerInit() {
   loadSolves();
+  a05Init()
   timerText.innerText = "0.00";
   doc.addEventListener("keypress", (e) => {
     if (e.key === " ") {
@@ -35,8 +39,25 @@ function timerInit() {
   });
 }
 
+function calcAvg(avg) {
+  let avgLen = avg.length;
+  let count = 0;
+  for (let i = 0; i < avgLen; i++) {
+    count += Number(avg[i]);
+    console.log(count);
+  }
+  let finalAvg = count / avgLen;
+  console.log(finalAvg);
+  return finalAvg.toFixed(2);
+}
+
 function a05Init() {
   ao5 = loadAvg(5);
+  runningAvg = calcAvg(ao5);
+  cao5.innerHTML = runningAvg;
+  for (i = 0; i < 5; i++) {
+    cavg[i].firstChild.innerHTML = ao5[i];
+  }
 }
 
 doc.addEventListener("keyup", (e) => {
@@ -79,6 +100,7 @@ function timerStop() {
 function saveSolves() {
   let newSave = JSON.stringify(solves);
   localStorage.setItem("solves", newSave);
+  a05Init();
 }
 
 function loadSolves() {
