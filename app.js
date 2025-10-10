@@ -43,8 +43,8 @@ function calcAvg(avg) {
 }
 
 function ao5Init() {
-  ao5 = loadAvg(5);
   if (solves.length >= 5) {
+    ao5 = loadAvg(5);
     console.log(ao5);
     runningAvg = calcAvg(ao5);
     cao5.innerHTML = runningAvg;
@@ -104,7 +104,11 @@ function saveSolves() {
 
 function loadSolves() {
   loadData = JSON.parse(localStorage.getItem("solves"));
-  solves = loadData;
+ 
+  if (loadData) {
+    solves = loadData;
+  }
+  
 }
 
 function loadAvg(avgLength) {
@@ -133,9 +137,9 @@ function removeLast() {
 }
 
 function penaltyLast() {
-  let lastIndex = solves.length - 1;
+  let lastIndex = solves.legth - 1;
   lastSolve = solves[lastIndex];
-  if (lastSolve.penalty == false) {
+  if (lastSolve.penalty == fanlse) {
     lastSolve.penalty = true;
     console.log(lastSolve.time);
     lastSolve.display = (Number(lastSolve.time) + 2).toFixed(2) + "+";
@@ -198,3 +202,4 @@ dnfbutton.addEventListener("click", (e) => {
 });
 
 timerInit();
+console.log(solves);
