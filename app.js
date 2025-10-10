@@ -45,7 +45,6 @@ function calcAvg(avg) {
 function ao5Init() {
   if (solves.length >= 5) {
     ao5 = loadAvg(5);
-    console.log(ao5);
     runningAvg = calcAvg(ao5);
     cao5.innerHTML = runningAvg;
     for (i = 0; i < 5; i++) {
@@ -93,7 +92,6 @@ function timerStop() {
   let newSolve = new Solve(timerText.innerHTML);
   solves.push(newSolve);
   saveSolves();
-  console.log(newSolve.time);
 }
 
 function saveSolves() {
@@ -104,11 +102,10 @@ function saveSolves() {
 
 function loadSolves() {
   loadData = JSON.parse(localStorage.getItem("solves"));
- 
+
   if (loadData) {
     solves = loadData;
   }
-  
 }
 
 function loadAvg(avgLength) {
@@ -133,40 +130,43 @@ function removeLast() {
     timerText.innerHTML = "0.00";
   }
   saveSolves();
-  console.log(solves);
 }
 
 function penaltyLast() {
-  let lastIndex = solves.legth - 1;
-  lastSolve = solves[lastIndex];
-  if (lastSolve.penalty == fanlse) {
-    lastSolve.penalty = true;
-    console.log(lastSolve.time);
-    lastSolve.display = (Number(lastSolve.time) + 2).toFixed(2) + "+";
-    timerText.innerHTML = lastSolve.time + "+";
-    ao5Init();
-  } else {
-    lastSolve.penalty = false;
-    lastSolve.display = lastSolve.time;
-    timerText.innerHTML = lastSolve.time;
-    ao5Init();
+  let lastIndex = solves.length - 1;
+  if (lastIndex > 0) {
+    lastSolve = solves[lastIndex];
+    if (lastSolve.penalty == false) {
+      lastSolve.penalty = true;
+      console.log(lastSolve.time);
+      lastSolve.display = (Number(lastSolve.time) + 2).toFixed(2) + "+";
+      timerText.innerHTML = lastSolve.time + "+";
+      ao5Init();
+    } else {
+      lastSolve.penalty = false;
+      lastSolve.display = lastSolve.time;
+      timerText.innerHTML = lastSolve.time;
+      ao5Init();
+    }
+    saveSolves();
   }
-  saveSolves();
 }
 function dnfLast() {
   let lastIndex = solves.length - 1;
-  lastSolve = solves[lastIndex];
-  if (lastSolve.dnf == false) {
-    lastSolve.dnf = true;
-    timerText.innerHTML = "DNF";
-    lastSolve.display = "DNF";
-  } else {
-    lastSolve.dnf = false;
-    lastSolve.display = lastSolve.time;
-    timerText.innerHTML = lastSolve.display;
-    ao5Init();
+  if (lastIndex > 0) {
+    lastSolve = solves[lastIndex];
+    if (lastSolve.dnf == false) {
+      lastSolve.dnf = true;
+      timerText.innerHTML = "DNF";
+      lastSolve.display = "DNF";
+    } else {
+      lastSolve.dnf = false;
+      lastSolve.display = lastSolve.time;
+      timerText.innerHTML = lastSolve.display;
+      ao5Init();
+    }
+    saveSolves();
   }
-  saveSolves();
 }
 
 doc.addEventListener("keypress", (e) => {
