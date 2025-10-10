@@ -31,14 +31,26 @@ function timerInit() {
 function calcAvg(avg) {
   let avgLen = avg.length;
   let count = 0;
+  let largest = 0;
+  let lowest = 0;
+  let dnfCount = 0;
   for (let i = 0; i < avgLen; i++) {
+    if (lowest == 0 || avg[i].time < lowest) {
+      lowest = avg[i].time;
+    } else if (avg[i].time > largest) {
+      largest = avg[i].time;
+    }
+    if (avg[i].dnf == true) {
+      dnfCount += 1;
+      continue;
+    }
     count += Number(avg[i].time);
     if (avg[i].penalty == true) {
       count += 2;
     }
   }
-  let finalAvg = count / avgLen;
-
+  count = count + largest * dnfCount - largest - lowest;
+  let finalAvg = count / (avgLen - 2);
   return finalAvg.toFixed(2);
 }
 
