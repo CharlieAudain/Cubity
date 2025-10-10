@@ -14,49 +14,48 @@ const xbutton = document.getElementById("removeButton");
 const penbutton = document.getElementById("penaltyButton");
 const dnfbutton = document.getElementById("dnfButton");
 const doc = document.querySelector("body");
+
+function Solve(time) {
+  this.time = time;
+  this.dnf = false;
+  this.penalty = false;
+  this.date = new Date();
+  this.display = this.time;
+}
 function timerInit() {
   loadSolves();
-  a05Init();
+  ao5Init();
   timerText.innerText = "0.00";
-  doc.addEventListener("keypress", (e) => {
-    if (e.key === " ") {
-      if (timerLoop) {
-        timerStop();
-      } else {
-        timerText.innerHTML = "0.00";
-        timerText.classList.add("red");
-        if (e.repeat == true) {
-          heldTime += 1;
-          console.log(heldTime);
-        }
-        if (heldTime > 2) {
-          timerText.classList.add("green");
-          timerText.classList.remove("red");
-          timerState = "ready";
-        }
-      }
-    }
-  });
 }
 
 function calcAvg(avg) {
   let avgLen = avg.length;
   let count = 0;
   for (let i = 0; i < avgLen; i++) {
-    count += Number(avg[i]);
-    console.log(count);
+    count += Number(avg[i].time);
+    if (avg[i].penalty == true) {
+      count += 2;
+    }
   }
   let finalAvg = count / avgLen;
-  console.log(finalAvg);
+
   return finalAvg.toFixed(2);
 }
 
-function a05Init() {
+function ao5Init() {
   ao5 = loadAvg(5);
-  runningAvg = calcAvg(ao5);
-  cao5.innerHTML = runningAvg;
-  for (i = 0; i < 5; i++) {
-    cavg[i].firstChild.innerHTML = ao5[i];
+  if (solves.length >= 5) {
+    console.log(ao5);
+    runningAvg = calcAvg(ao5);
+    cao5.innerHTML = runningAvg;
+    for (i = 0; i < 5; i++) {
+      cavg[i].firstChild.innerHTML = ao5[i].display;
+    }
+  } else {
+    cao5.innerHTML = "?";
+    for (i = 0; i < 5; i++) {
+      cavg[i].firstChild.innerHTML = "";
+    }
   }
 }
 
@@ -74,7 +73,6 @@ function timerFunction(initial) {
   let delta = elapsed - initial;
 
   timerText.innerText = (delta / 1000).toFixed(2);
-  console.log(delta);
 }
 
 function timerStart() {
@@ -92,15 +90,16 @@ function timerStart() {
 function timerStop() {
   clearInterval(timerLoop);
   timerLoop = null;
-  solves.push(timerText.innerHTML);
+  let newSolve = new Solve(timerText.innerHTML);
+  solves.push(newSolve);
   saveSolves();
-  console.log(solves);
+  console.log(newSolve.time);
 }
 
 function saveSolves() {
   let newSave = JSON.stringify(solves);
   localStorage.setItem("solves", newSave);
-  a05Init();
+  ao5Init();
 }
 
 function loadSolves() {
@@ -111,9 +110,12 @@ function loadSolves() {
 function loadAvg(avgLength) {
   let avg = [];
   let lastIndex = solves.length;
-  for (i = 1; i < avgLength + 1; i++) {
-    avg.push(solves[lastIndex - i]);
+  if (solves.length >= avgLength) {
+    for (i = 1; i < avgLength + 1; i++) {
+      avg.push(solves[lastIndex - i]);
+    }
   }
+
   return avg;
 }
 
@@ -122,7 +124,7 @@ function removeLast() {
   solves.pop();
   lastIndex = solves.length;
   if (lastIndex > 0) {
-    timerText.innerHTML = solves[lastIndex - 1];
+    timerText.innerHTML = solves[lastIndex - 1].time;
   } else {
     timerText.innerHTML = "0.00";
   }
@@ -133,25 +135,54 @@ function removeLast() {
 function penaltyLast() {
   let lastIndex = solves.length - 1;
   lastSolve = solves[lastIndex];
-  if (lastSolve.includes("+") == false) {
-    lastNumber = Number(lastSolve);
-    lastNumber += 2;
-    let lastIndex = solves.length;
-    penaltySolve = lastNumber.toFixed(2) + "+";
-    timerText.innerHTML = penaltySolve;
-    solves[lastIndex - 1] = penaltySolve;
-    saveSolves();
+  if (lastSolve.penalty == false) {
+    lastSolve.penalty = true;
+    console.log(lastSolve.time);
+    lastSolve.display = (Number(lastSolve.time) + 2).toFixed(2) + "+";
+    timerText.innerHTML = lastSolve.time + "+";
+    ao5Init();
+  } else {
+    lastSolve.penalty = false;
+    lastSolve.display = lastSolve.time;
+    timerText.innerHTML = lastSolve.time;
+    ao5Init();
   }
+  saveSolves();
 }
 function dnfLast() {
   let lastIndex = solves.length - 1;
   lastSolve = solves[lastIndex];
-  if (lastSolve.includes("DNF") == false) {
+  if (lastSolve.dnf == false) {
+    lastSolve.dnf = true;
     timerText.innerHTML = "DNF";
-    solves[lastIndex] = "DNF";
-    saveSolves();
+    lastSolve.display = "DNF";
+  } else {
+    lastSolve.dnf = false;
+    lastSolve.display = lastSolve.time;
+    timerText.innerHTML = lastSolve.display;
+    ao5Init();
   }
+  saveSolves();
 }
+
+doc.addEventListener("keypress", (e) => {
+  if (e.key === " ") {
+    if (timerLoop) {
+      timerStop();
+    } else {
+      timerText.innerHTML = "0.00";
+      timerText.classList.add("red");
+      if (e.repeat == true) {
+        heldTime += 1;
+      }
+      if (heldTime > 2) {
+        timerText.classList.add("green");
+        timerText.classList.remove("red");
+        timerState = "ready";
+      }
+    }
+  }
+});
 
 xbutton.addEventListener("click", (e) => {
   e.target.blur();
