@@ -4,11 +4,13 @@ let startTime;
 let timerLoop = null;
 let timerState;
 let heldTime = 0;
-let solves = [];
+
 let ao5 = [];
 let feed = document.getElementById("feed");
 let cavg = document.getElementsByClassName("cavg");
 let cao5 = document.getElementById("ao5");
+let currentScramble = document.getElementById("scramble");
+let nextID = 1;
 
 const xbutton = document.getElementById("removeButton");
 const penbutton = document.getElementById("penaltyButton");
@@ -16,16 +18,24 @@ const dnfbutton = document.getElementById("dnfButton");
 const doc = document.querySelector("body");
 
 function Solve(time) {
+  this.id = nextID;
+  nextID += 1;
   this.time = time;
   this.dnf = false;
   this.penalty = false;
   this.date = new Date();
   this.display = this.time;
+  this.scramble = currentScramble.innerHTML;
 }
 function timerInit() {
   loadSolves();
   ao5Init();
-  timerText.innerText = "0.00";
+  loadScramble("F R2 U2 F' R2 F' L2 U2 B2 L2 D2 F2 D' B2 L2 B R' F2 R' D B'");
+  timerText.innerHTML = "0.00";
+}
+
+function loadScramble(gen) {
+  currentScramble.innerHTML = gen;
 }
 
 function calcAvg(avg) {
@@ -60,7 +70,7 @@ function ao5Init() {
     runningAvg = calcAvg(ao5);
     cao5.innerHTML = runningAvg;
     for (i = 0; i < 5; i++) {
-      cavg[i].firstChild.innerHTML = ao5[i].display;
+      cavg[i].firstChild.innerHTML = ao5[i].display ?? "-";
     }
   } else {
     cao5.innerHTML = "?";
@@ -103,21 +113,9 @@ function timerStop() {
   timerLoop = null;
   let newSolve = new Solve(timerText.innerHTML);
   solves.push(newSolve);
+  console.log(newSolve.id);
   saveSolves();
-}
-
-function saveSolves() {
-  let newSave = JSON.stringify(solves);
-  localStorage.setItem("solves", newSave);
   ao5Init();
-}
-
-function loadSolves() {
-  loadData = JSON.parse(localStorage.getItem("solves"));
-
-  if (loadData) {
-    solves = loadData;
-  }
 }
 
 function loadAvg(avgLength) {
@@ -141,6 +139,7 @@ function removeLast() {
   } else {
     timerText.innerHTML = "0.00";
   }
+  ao5Init();
   saveSolves();
 }
 
