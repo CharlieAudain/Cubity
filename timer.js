@@ -130,11 +130,6 @@ function loadAvg(avgLength) {
   return avg;
 }
 
-
-
-
-
-
 doc.addEventListener("keypress", (e) => {
   if (e.key === " ") {
     if (timerLoop) {
@@ -156,15 +151,25 @@ doc.addEventListener("keypress", (e) => {
 
 xbutton.addEventListener("click", (e) => {
   e.target.blur();
-  removeLast();
+  console.log(nextID - 1);
+  removeLast(nextID - 1);
+  saveSolves();
+  ao5Init();
 });
 penbutton.addEventListener("click", (e) => {
   e.target.blur();
-  penaltyLast();
+  console.log(nextID - 1);
+  penaltySolve(nextID - 1);
+  saveSolves();
+  ao5Init();
 });
+
 dnfbutton.addEventListener("click", (e) => {
   e.target.blur();
-  dnfLast();
+  console.log(nextID - 1);
+  dnfLast(nextID - 1);
+  saveSolves();
+  ao5Init();
 });
 
 timerInit();

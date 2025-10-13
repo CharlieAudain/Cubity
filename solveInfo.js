@@ -1,60 +1,64 @@
 let solves = [];
 function saveSolves() {
   let newSave = JSON.stringify(solves);
+  let currentID = JSON.stringify(nextID);
   localStorage.setItem("solves", newSave);
+  localStorage.setItem("id", currentID);
 }
 
 function loadSolves() {
   loadData = JSON.parse(localStorage.getItem("solves"));
+  loadID = JSON.parse(localStorage.getItem("id"));
 
   if (loadData) {
     solves = loadData;
   }
+  if (loadID) {
+    nextID = loadID;
+  }
 }
 
-function removeLast() {
-  let lastIndex = solves.length;
-  solves.pop();
-  lastIndex = solves.length;
-  if (lastIndex > 0) {
-    timerText.innerHTML = solves[lastIndex - 1].time;
-  } else {
-    timerText.innerHTML = "0.00";
+function removeLast(id) {
+  for (i = 0; i < solves.length; i++) {
+    if (solves[i].id == id) {
+      solves.splice(i, 1);
+      console.log(i);
+    }
   }
-  
+
   saveSolves();
 }
 
-function penaltyLast() {
-  let lastIndex = solves.length - 1;
-  if (lastIndex > 0) {
-    lastSolve = solves[lastIndex];
-    if (lastSolve.penalty == false) {
-      lastSolve.penalty = true;
-      console.log(lastSolve.time);
-      lastSolve.display = (Number(lastSolve.time) + 2).toFixed(2) + "+";
-    } else {
-      lastSolve.penalty = false;
-      lastSolve.display = lastSolve.time;
+function penaltySolve(id) {
+  for (i = 0; i < solves.length; i++) {
+    if (solves[i].id == id) {
+      if (solves[i].penalty == false) {
+        solves[i].penalty = true;
+        console.log(solves[i].time);
+        solves[i].display = (Number(solves[i].time) + 2).toFixed(2) + "+";
+        break;
+      } else {
+        solves[i].penalty = false;
+        solves[i].display = solves[i].time;
+      }
     }
-    saveSolves();
   }
+
+  saveSolves();
 }
 
-function dnfLast() {
-  let lastIndex = solves.length - 1;
-  if (lastIndex > 0) {
-    lastSolve = solves[lastIndex];
-    if (lastSolve.dnf == false) {
-      lastSolve.dnf = true;
-      timerText.innerHTML = "DNF";
-      lastSolve.display = "DNF";
-    } else {
-      lastSolve.dnf = false;
-      lastSolve.display = lastSolve.time;
-      timerText.innerHTML = lastSolve.display;
-      ao5Init();
+function dnfLast(id) {
+  for (i = 0; i < solves.length; i++) {
+    if (solves[i].id == id) {
+      if (solves[i].dnf == false) {
+        solves[i].dnf = true;
+        solves[i].display = "DNF";
+      } else {
+        solves[i].dnf = false;
+        solves[i].display = solves[i].time;
+      }
     }
-    saveSolves();
   }
+
+  saveSolves();
 }
