@@ -1,7 +1,11 @@
 let solveTable = document.getElementById("solvesTable");
 
+function rowDestroyer() {
+  solveTable.innerHTML = "";
+}
+
 function rowBuilder(solveList) {
-  for (i = 0; i < solves.length; i++) {
+  for (let i = 0; i < solveList.length; i++) {
     let row = document.createElement("tr");
     let id = document.createElement("td");
     let time = document.createElement("td");
@@ -14,14 +18,38 @@ function rowBuilder(solveList) {
     let rButton = document.createElement("button");
     rButton.classList = "btn";
     rButton.innerHTML = "X";
+    rButton.addEventListener("click", (e) => {
+      e.target.blur();
+      console.log(i);
+      removeLast(solveList[i].id);
+      fixIDs();
+      saveSolves();
+      rowDestroyer();
+      rowBuilder(solves);
+    });
     actions.appendChild(rButton);
     let pButton = document.createElement("button");
     pButton.classList = "btn";
     pButton.innerHTML = "+2";
+    pButton.addEventListener("click", (e) => {
+      e.target.blur();
+      console.log(i);
+      penaltySolve(solveList[i].id);
+      saveSolves();
+      rowDestroyer();
+      rowBuilder(solves);
+    });
     actions.appendChild(pButton);
     let dButton = document.createElement("button");
     dButton.classList = "btn";
     dButton.innerHTML = "DNF";
+    dButton.addEventListener("click", (e) => {
+      e.target.blur();
+      dnfLast(solveList[i].id);
+      saveSolves();
+      rowDestroyer();
+      rowBuilder(solves);
+    });
     actions.appendChild(dButton);
 
     let day = solveList[i].date.slice(8, 10);
@@ -44,5 +72,5 @@ function rowBuilder(solveList) {
   }
 }
 loadSolves();
-console.log(solves[1].date);
+
 rowBuilder(solves);

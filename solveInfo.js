@@ -6,10 +6,22 @@ function saveSolves() {
   localStorage.setItem("id", currentID);
 }
 
+function fixIDs() {
+  if (solves.length > 0) {
+    for (i = 0; i < solves.length; i++) {
+      console.log(solves[i]);
+      solves[i].id = i + 1;
+    }
+  }
+
+  nextID = solves.length + 1;
+  saveSolves();
+}
+
 function loadSolves() {
   loadData = JSON.parse(localStorage.getItem("solves"));
   loadID = JSON.parse(localStorage.getItem("id"));
-
+  console.log(loadData);
   if (loadData) {
     solves = loadData;
   }

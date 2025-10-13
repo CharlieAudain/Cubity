@@ -30,6 +30,7 @@ function Solve(time) {
 function timerInit() {
   loadSolves();
   ao5Init();
+  fixIDs();
   loadScramble("F R2 U2 F' R2 F' L2 U2 B2 L2 D2 F2 D' B2 L2 B R' F2 R' D B'");
   timerText.innerHTML = "0.00";
 }
@@ -153,6 +154,7 @@ xbutton.addEventListener("click", (e) => {
   e.target.blur();
   console.log(nextID - 1);
   removeLast(nextID - 1);
+  fixIDs();
   saveSolves();
   ao5Init();
 });
@@ -173,4 +175,4 @@ dnfbutton.addEventListener("click", (e) => {
 });
 
 timerInit();
-console.log(solves);
+console.log(nextID);
