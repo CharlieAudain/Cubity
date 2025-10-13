@@ -13,7 +13,6 @@ li {
 }
 a {
   text-decoration: none;
-  color: #00bfff;
 }
 
 nav {
@@ -33,9 +32,6 @@ main {
 nav ul li,
 nav a {
   padding: 1.2rem;
-}
-nav ul li:hover {
-  text-decoration: underline;
 }
 
 .container {
@@ -81,4 +77,9 @@ nav ul li:hover {
 .buttons {
   display: flex;
   justify-content: space-evenly;
+}
+
+.buttons :hover,
+a:hover {
+  color: #00bfff;
 }

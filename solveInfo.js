@@ -9,7 +9,6 @@ function saveSolves() {
 function fixIDs() {
   if (solves.length > 0) {
     for (i = 0; i < solves.length; i++) {
-      console.log(solves[i]);
       solves[i].id = i + 1;
     }
   }

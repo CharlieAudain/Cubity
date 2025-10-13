@@ -6,9 +6,21 @@ let timerState;
 let heldTime = 0;
 
 let ao5 = [];
+let ao12 = [];
+let ao50 = [];
+let ao100 = [];
+let ao200 = [];
+let ao500 = [];
+let ao1000 = [];
 let feed = document.getElementById("feed");
 let cavg = document.getElementsByClassName("cavg");
 let cao5 = document.getElementById("ao5");
+let cao12 = document.getElementById("ao12");
+let cao50 = document.getElementById("ao50");
+let cao100 = document.getElementById("ao100");
+let cao200 = document.getElementById("ao200");
+let cao500 = document.getElementById("ao500");
+let cao1000 = document.getElementById("ao1000");
 let currentScramble = document.getElementById("scramble");
 let nextID = 1;
 
@@ -29,7 +41,7 @@ function Solve(time) {
 }
 function timerInit() {
   loadSolves();
-  ao5Init();
+  avgInit();
   fixIDs();
   loadScramble("F R2 U2 F' R2 F' L2 U2 B2 L2 D2 F2 D' B2 L2 B R' F2 R' D B'");
   timerText.innerHTML = "0.00";
@@ -65,7 +77,7 @@ function calcAvg(avg) {
   return finalAvg.toFixed(2);
 }
 
-function ao5Init() {
+function avgInit() {
   if (solves.length >= 5) {
     ao5 = loadAvg(5);
     runningAvg = calcAvg(ao5);
@@ -78,6 +90,48 @@ function ao5Init() {
     for (i = 0; i < 5; i++) {
       cavg[i].firstChild.innerHTML = "";
     }
+  }
+  if (solves.length >= 12) {
+    ao12 = loadAvg(12);
+    runningAvg = calcAvg(ao12);
+    cao12.innerHTML = runningAvg;
+  } else {
+    cao12.innerHTML = "?";
+  }
+  if (solves.length >= 50) {
+    ao50 = loadAvg(50);
+    runningAvg = calcAvg(ao50);
+    cao50.innerHTML = runningAvg;
+  } else {
+    cao50.innerHTML = "?";
+  }
+  if (solves.length >= 100) {
+    ao100 = loadAvg(100);
+    runningAvg = calcAvg(ao100);
+    cao100.innerHTML = runningAvg;
+  } else {
+    cao100.innerHTML = "?";
+  }
+  if (solves.length >= 200) {
+    ao200 = loadAvg(200);
+    runningAvg = calcAvg(ao200);
+    cao200.innerHTML = runningAvg;
+  } else {
+    cao200.innerHTML = "?";
+  }
+  if (solves.length >= 500) {
+    ao500 = loadAvg(500);
+    runningAvg = calcAvg(ao500);
+    cao500.innerHTML = runningAvg;
+  } else {
+    cao500.innerHTML = "?";
+  }
+  if (solves.length >= 1000) {
+    ao200 = loadAvg(1000);
+    runningAvg = calcAvg(ao1000);
+    cao1000.innerHTML = runningAvg;
+  } else {
+    cao1000.innerHTML = "?";
   }
 }
 
@@ -114,9 +168,8 @@ function timerStop() {
   timerLoop = null;
   let newSolve = new Solve(timerText.innerHTML);
   solves.push(newSolve);
-  console.log(newSolve.id);
   saveSolves();
-  ao5Init();
+  avgInit();
 }
 
 function loadAvg(avgLength) {
@@ -152,27 +205,23 @@ doc.addEventListener("keypress", (e) => {
 
 xbutton.addEventListener("click", (e) => {
   e.target.blur();
-  console.log(nextID - 1);
   removeLast(nextID - 1);
   fixIDs();
   saveSolves();
-  ao5Init();
+  avgInit();
 });
 penbutton.addEventListener("click", (e) => {
   e.target.blur();
-  console.log(nextID - 1);
   penaltySolve(nextID - 1);
   saveSolves();
-  ao5Init();
+  avgInit();
 });
 
 dnfbutton.addEventListener("click", (e) => {
   e.target.blur();
-  console.log(nextID - 1);
   dnfLast(nextID - 1);
   saveSolves();
-  ao5Init();
+  avgInit();
 });
 
 timerInit();
-console.log(nextID);
