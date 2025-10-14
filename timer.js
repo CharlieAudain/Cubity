@@ -22,6 +22,11 @@ let cao200 = document.getElementById("ao200");
 let cao500 = document.getElementById("ao500");
 let cao1000 = document.getElementById("ao1000");
 let currentScramble = document.getElementById("scramble");
+let best = document.getElementById("best");
+let todayBest = document.getElementById("todayBest");
+let worst = document.getElementById("worst");
+let todayWorst = document.getElementById("todayWorst");
+
 let nextID = 1;
 
 const xbutton = document.getElementById("removeButton");
@@ -42,6 +47,7 @@ function Solve(time) {
 function timerInit() {
   loadSolves();
   avgInit();
+  todayInit();
   fixIDs();
   loadScramble("F R2 U2 F' R2 F' L2 U2 B2 L2 D2 F2 D' B2 L2 B R' F2 R' D B'");
   timerText.innerHTML = "0.00";
@@ -132,6 +138,55 @@ function avgInit() {
     cao1000.innerHTML = runningAvg;
   } else {
     cao1000.innerHTML = "?";
+  }
+}
+
+function todayInit() {
+  todaySolves = [];
+  today = new Date();
+  todayDate = today.toISOString(); //get full date
+
+  if (solves.length > 0) {
+    for (i = 0; i < solves.length; i++) {
+      console.log(solves[i].date);
+      if (solves[i].date.slice(0, 10) == todayDate.slice(0, 10)) {
+        //compare date to each solve to build today solves list
+        todaySolves.push(solves[i]);
+      }
+    }
+  } else {
+    todayBest.innerHTML = "?";
+    todayWorst.innerHTML = "?";
+  }
+
+  todayBest.innerHTML = getBest(todaySolves);
+  todayWorst.innerHTML = getWorst(todaySolves);
+}
+
+function getBest(list) {
+  if (list.length > 0) {
+    best = list[0].time;
+    for (i = 0; i < list.length; i++) {
+      if (best > list[i].time) {
+        best = list[i].time;
+      }
+    }
+    return best;
+  } else {
+    return "?";
+  }
+}
+function getWorst(list) {
+  if (list.length > 0) {
+    best = list[0].time;
+    for (i = 0; i < list.length; i++) {
+      if (best < list[i].time) {
+        best = list[i].time;
+      }
+    }
+    return best;
+  } else {
+    return "?";
   }
 }
 
