@@ -5,7 +5,7 @@ function rowDestroyer() {
 }
 
 function rowBuilder(solveList) {
-  for (let i = 0; i < solveList.length; i++) {
+  for (let i = 1; i <= solveList.length; i++) {
     let row = document.createElement("tr");
     let id = document.createElement("td");
     let time = document.createElement("td");
@@ -34,7 +34,7 @@ function rowBuilder(solveList) {
     pButton.addEventListener("click", (e) => {
       e.target.blur();
       console.log(i);
-      penaltySolve(solveList[i].id);
+      penaltySolve(solveList[solveList.length - i].id);
       saveSolves();
       rowDestroyer();
       rowBuilder(solves);
@@ -45,26 +45,26 @@ function rowBuilder(solveList) {
     dButton.innerHTML = "DNF";
     dButton.addEventListener("click", (e) => {
       e.target.blur();
-      dnfLast(solveList[i].id);
+      dnfLast(solveList[solveList.length - i].id);
       saveSolves();
       rowDestroyer();
       rowBuilder(solves);
     });
     actions.appendChild(dButton);
 
-    let day = solveList[i].date.slice(8, 10);
-    let month = solveList[i].date.slice(5, 7);
-    let year = solveList[i].date.slice(0, 4);
-    let timeStamp = solveList[i].date.slice(11, 19);
+    let day = solveList[solveList.length - i].date.slice(8, 10);
+    let month = solveList[solveList.length - i].date.slice(5, 7);
+    let year = solveList[solveList.length - i].date.slice(0, 4);
+    let timeStamp = solveList[solveList.length - i].date.slice(11, 19);
     let dateExport = day + "-" + month + "-" + year + " " + timeStamp;
 
-    id.innerHTML = solveList[i].id;
+    id.innerHTML = solveList[solveList.length - i].id;
     row.appendChild(id);
-    time.innerHTML = solveList[i].display;
+    time.innerHTML = solveList[solveList.length - i].display;
     row.appendChild(time);
     date.innerHTML = dateExport;
     row.appendChild(date);
-    scramble.innerHTML = solveList[i].scramble;
+    scramble.innerHTML = solveList[solveList.length - i].scramble;
     row.appendChild(scramble);
     row.appendChild(actions);
 

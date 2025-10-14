@@ -50,8 +50,64 @@ function timerInit() {
   bestsInit();
   todayInit();
   fixIDs();
-  loadScramble("F R2 U2 F' R2 F' L2 U2 B2 L2 D2 F2 D' B2 L2 B R' F2 R' D B'");
+  loadScramble(scrambleGen(20));
   timerText.innerHTML = "0.00";
+}
+
+function scrambleGen(length) {
+  let gen = "";
+  let last
+  let rng
+  for (i = 0; i < length; i++) {
+    while(last == rng){ // make sure you dont ge the same moves twice
+    
+      rng = Math.floor(Math.random() * (12 - 1) + 1);
+    }
+    
+    switch (rng) {
+      case 1:
+        gen += "F";
+        break;
+      case 2:
+        gen += "F2";
+        break;
+      case 3:
+        gen += "B";
+        break;
+      case 4:
+        gen += "B2";
+        break;
+      case 5:
+        gen += "L";
+        break;
+      case 6:
+        gen += "L2";
+        break;
+      case 7:
+        gen += "R";
+        break;
+      case 8:
+        gen += "R2";
+        break;
+      case 9:
+        gen += "D";
+        break;
+      case 10:
+        gen += "D2";
+        break;
+      case 11:
+        gen += "U";
+        break;
+      case 12:
+        gen += "U2";
+        break;
+    }
+    last = rng
+    gen += " ";
+    console.log(gen);
+  }
+
+  return gen;
 }
 
 function loadScramble(gen) {
@@ -229,6 +285,7 @@ function timerStop() {
   timerLoop = null;
   let newSolve = new Solve(timerText.innerHTML);
   solves.push(newSolve);
+  currentScramble.innerHTML = scrambleGen(20);
   saveSolves();
   avgInit();
 }
