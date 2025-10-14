@@ -47,6 +47,7 @@ function Solve(time) {
 function timerInit() {
   loadSolves();
   avgInit();
+  bestsInit();
   todayInit();
   fixIDs();
   loadScramble("F R2 U2 F' R2 F' L2 U2 B2 L2 D2 F2 D' B2 L2 B R' F2 R' D B'");
@@ -161,6 +162,11 @@ function todayInit() {
 
   todayBest.innerHTML = getBest(todaySolves);
   todayWorst.innerHTML = getWorst(todaySolves);
+}
+
+function bestsInit() {
+  best.innerHTML = getBest(solves);
+  worst.innerHTML = getWorst(solves);
 }
 
 function getBest(list) {
