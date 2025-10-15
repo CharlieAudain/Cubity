@@ -1,8 +1,16 @@
 table {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
-td{
-    padding: 1em;
+td {
+  padding-left: 1em;
+}
+
+td .btn {
+  font-size: 1.5em;
+}
+
+td .btn:hover {
+  color: #00bfff;
 }
