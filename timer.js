@@ -56,53 +56,67 @@ function timerInit() {
 
 function scrambleGen(length) {
   let gen = "";
-  let last
-  let rng
+  let last;
+  let rng;
+  let rng2;
   for (i = 0; i < length; i++) {
-    while(last == rng){ // make sure you dont ge the same moves twice
-    
-      rng = Math.floor(Math.random() * (12 - 1) + 1);
+    while (last == rng) {
+      // make sure you dont ge the same moves twice
+
+      rng = Math.floor(Math.random() * (7 - 1) + 1);
     }
-    
+
     switch (rng) {
       case 1:
-        gen += "F";
+        rng2 = Math.floor(Math.random() * (3 - 1) + 1);
+        if (rng2 == 1) {
+          gen += "F";
+        } else {
+          gen += "F2";
+        }
         break;
       case 2:
-        gen += "F2";
+        rng2 = Math.floor(Math.random() * (3 - 1) + 1);
+        if (rng2 == 1) {
+          gen += "B";
+        } else {
+          gen += "B2";
+        }
         break;
       case 3:
-        gen += "B";
+        rng2 = Math.floor(Math.random() * (3 - 1) + 1);
+        if (rng2 == 1) {
+          gen += "L";
+        } else {
+          gen += "L2";
+        }
         break;
       case 4:
-        gen += "B2";
+        rng2 = Math.floor(Math.random() * (3 - 1) + 1);
+        if (rng2 == 1) {
+          gen += "R";
+        } else {
+          gen += "R2";
+        }
         break;
       case 5:
-        gen += "L";
+        rng2 = Math.floor(Math.random() * (3 - 1) + 1);
+        if (rng2 == 1) {
+          gen += "D";
+        } else {
+          gen += "D2";
+        }
         break;
       case 6:
-        gen += "L2";
-        break;
-      case 7:
-        gen += "R";
-        break;
-      case 8:
-        gen += "R2";
-        break;
-      case 9:
-        gen += "D";
-        break;
-      case 10:
-        gen += "D2";
-        break;
-      case 11:
-        gen += "U";
-        break;
-      case 12:
-        gen += "U2";
+        rng2 = Math.floor(Math.random() * (3 - 1) + 1);
+        if (rng2 == 1) {
+          gen += "U";
+        } else {
+          gen += "U2";
+        }
         break;
     }
-    last = rng
+    last = rng;
     gen += " ";
     console.log(gen);
   }
