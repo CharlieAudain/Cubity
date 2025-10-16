@@ -21,7 +21,7 @@ function rowBuilder(solveList) {
     rButton.addEventListener("click", (e) => {
       e.target.blur();
       console.log(i);
-      removeLast(solveList[i].id);
+      removeLast(solveList[solveList.length - i].id);
       fixIDs();
       saveSolves();
       rowDestroyer();
