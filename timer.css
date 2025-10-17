@@ -25,7 +25,8 @@ nav ul,
   display: flex;
 }
 
-main {
+main,
+#lower {
   display: flex;
 }
 
@@ -82,4 +83,10 @@ nav a {
 .buttons :hover,
 a:hover {
   color: #00bfff;
+}
+
+#tips {
+  margin: auto;
+  padding: 1em;
+  text-align: center;
 }
